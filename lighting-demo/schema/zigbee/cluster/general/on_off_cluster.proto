@@ -1,0 +1,68 @@
+/**
+ *    @file
+ *      This file defines the Bolt Lock trait.
+ *
+ */
+
+syntax = "proto3";
+
+package zigbee.cluster.general;
+
+import "wdl/wdl_options.proto";
+import "weave/common/identifiers.proto";
+import "google/protobuf/timestamp.proto";
+
+option java_outer_classname = "ZigbeeClusterGeneralOnOff";
+option objc_class_prefix = "SCM";
+
+message OnOffCluster {
+  option (wdl.message_type) = TRAIT;
+  option (wdl.trait) = {
+    stability: ALPHA,
+    id: 0x0006,
+    vendor_id: ZIGBEE,
+    version: 1
+  };
+
+  enum RampType {
+      RAMP_TYPE_UNSPECIFIED = 0;
+      RAMP_TYPE_SLOW = 1;
+      RAMP_TYPE_FAST = 2;
+  }
+
+  message RampInfo {
+    option (wdl.message_type) = STRUCT;
+
+    uint32 ramp_duration = 1;
+    RampType type = 2;
+  }
+
+  //
+  // Properties
+  //
+
+  //
+  // Standard list from the ZCL Cluster Specification
+  // here: https://zigbeealliance.org/wp-content/uploads/2019/12/07-5123-06-zigbee-cluster-library-specification.pdf
+  // 
+  bool on_off = 1;
+  bool global_scene_control = 2;
+  uint32 on_time = 3 [(wdl.prop) = {uint_constraints: {width: 16}}];
+  uint32 off_wait_time = 4 [(wdl.prop) = {uint_constraints: {width: 16}}];
+
+  // 
+  // Extra properties added just for the chip-demo
+  // to show-case deeply embedded structs
+  //
+  RampInfo ramp_info = 5;
+
+  //
+  // Commands
+  //
+  message ToggleRequest {
+    option (wdl.message_type) = COMMAND;
+    option (wdl.command) = {
+      id: 0x02,
+    };
+  }
+}

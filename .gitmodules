@@ -1,0 +1,4 @@
+[submodule "third_party/openweave-core/repo"]
+	path = third_party/openweave-core/repo
+	url = git@github.com:mrjerryjohns/openweave-core.git
+	branch = feature/chip-demo-lighting
